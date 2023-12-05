@@ -4,10 +4,10 @@ export type DiscordRPCPlugin = {
     logLevel: LogLevel,
     callback: CallbackResponse
   ) => void;
-  onClientReady: (callback: OnClientReadyCallbackResponse) => void;
-  onPresenceUpdate: (callback: SuccessCallbackResponse) => void;
-  onClientError: (callback: ErrorCallbackResponse) => void;
-  onLogLine: (callback: OnLogLineCallbackResponse) => void;
+  onClientReady: Listener<OnClientReadyCallbackResponse>;
+  onPresenceUpdate: Listener<SuccessCallbackResponse>;
+  onClientError: Listener<ErrorCallbackResponse>;
+  onLogLine: Listener<OnLogLineCallbackResponse>;
   updatePresence: (
     details: string,
     state: string,
@@ -38,12 +38,16 @@ export type DiscordRPCPlugin = {
   dispose: (callback: CallbackResponse) => void;
 };
 
+type Listener<T> = {
+  addListener: (callback: T) => void;
+  removeListener: (callback: T) => void;
+};
 type SuccessResponse = {
-  status: 'success';
+  status: "success";
   success: true;
 };
 type ErrorResponse = {
-  status: 'error';
+  status: "error";
   success: false;
   error: string;
 };
