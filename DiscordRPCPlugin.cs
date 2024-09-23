@@ -66,6 +66,7 @@ namespace overwolf.plugins
 
         private Timestamps tsStartTime = null;
         private OverwolfConsoleLogger logger = null;
+        private OverwolfConsoleLogger _initialize = null;
 
         /// <summary>
         /// 
@@ -73,9 +74,13 @@ namespace overwolf.plugins
         /// <param name="applicationID"></param>
         /// <param name="callback"></param>
         public void initialize(string applicationID, int logLevel, Action<object> callback)
-        {
+        {            
             try
             {
+                if (_initialize) {
+                    throw new Exception("Already initialized");
+                }
+
                 tsStartTime = Timestamps.Now;
 
                //Logger logger = new ConsoleLogger();
@@ -109,6 +114,8 @@ namespace overwolf.plugins
 
                 //Connect to the RPC
                 client.Initialize();
+
+                _initialize = true;
 
                 callback(new SuccessCallbackResponse());
             }
