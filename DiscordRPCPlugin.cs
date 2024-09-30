@@ -66,7 +66,7 @@ namespace overwolf.plugins
 
         private Timestamps tsStartTime = null;
         private OverwolfConsoleLogger logger = null;
-        private OverwolfConsoleLogger _initialize = null;
+        private bool _initialize = false;
 
         /// <summary>
         /// 
@@ -266,10 +266,13 @@ namespace overwolf.plugins
                 }
 
                 callback(new SuccessCallbackResponse());
+                
             }
             catch (Exception ex)
             {
                 callback(new ErrorCallbackResponse(ex.Message));
+            } finally {
+                _initialize = false;
             }
         }
     }
